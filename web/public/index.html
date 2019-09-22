@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+	body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+  #show_info {width: 300px; height: 100%;position:absolute;top:0px;right:0px;
+              background: white;
+              /* box-sizing: border-box; */
+              border-style:solid;
+              /* border-top-color: white; */
+              /* border-right-color: white; */
+              /* border-left: darkgray; */
+              /* border-left-width: 10px; */
+              border-color: darkgray;
+              /* border-top-color: white; */
+              /* border-right-color: white; */
+              border-left-width: 1px;
+              border-top-width: 0px;
+              border-bottom-width: 0px;
+              border-right-width: 0px;
+              }
+  #user_info_container {
+    width: 100%;
+    height: 150px;
+    text-align: center;
+    margin-top: 50px;
+  }
+  #user_img {
+    border-radius:60px;
+    width: 60px;
+    height: 60px;
+    margin: auto;
+    margin-top: 20px;
+  }
+  .split_line{
+    width: 100%;
+    height: 1px;
+    margin: 16px 0;
+    background-color: #eee;
+  }
+  .split_line_1{
+    width: 80%;
+    padding-left: 10px;
+    padding-right: 0px;
+    height: 1px;
+    margin: 16px 0;
+    background-color: #eee;
+    
+  }
+  .button{
+    background: #76de3f;
+    margin-left: 20px;
+  }
+  .title_text {
+    color: #2d2d2d;
+    font-weight: 500;
+    font-size: 14px;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .id_text {
+    color: #969696;
+    font-size: 12px;
+  }
+  #user_name {
+    margin-top: -3px;
+  }
+  #user_id {
+    margin-top: -15px;
+  }
+
+  #car_info {
+    width: 100%;
+    height: 250px;
+    /* background: black; */
+    padding: 12px;
+  }
+  #service {
+    /* background: black; */
+    width: 100%;
+    height: 150px;
+    margin-top:50px;
+    text-align: center;
+    
+  }
+  #button2 {
+    margin-left: 40px;
+  }
+  </style>
+  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+	<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=obYT3siUcvtzcnqpIDGWKFem6eaf1RVb"></script>
+	<title>地图展示</title>
+</head>
+<body>
+  <div id="allmap"></div>
+  <div id="show_info">
+    <div id="user_info_container">
+      <img id="user_img" src="static/user_icon_1.jpg"/> 
+      <p class="title_text" id="user_name">User</p>
+      <p class="id_text" id="user_id">ID:88888888</p>
+    </div>
+    <div class="split_line"></div>
+
+    <div id="car_info">  
+      
+      <div class="display_data">
+        <p>账户余额： 0</p>
+      </div>
+      <div class="split_line_1"></div>
+      
+      <div class="display_data">
+        <p>车牌号：沪A·F23456</p>
+      </div>
+      <div class="split_line_1"></div>
+      
+      <div class="display_data">
+        <p>车型： </p>
+      </div>
+      <div class="split_line_1"></div>
+      <div class="display_data">
+        <p>GPS :  100 , 200</p>
+      </div>
+    
+      <div class="split_line_1"></div>
+      <div class="display_data">
+        <p>里程数： 50公里</p>
+      </div>
+      <div class="split_line_1"></div>
+      <div class="display_data">
+        <p>违章记录： 15次</p>
+      </div>
+    </div>
+    
+    <div class="split_line"></div>
+
+    <div id="service">
+        <button class="button2" style='background-color:#76de3f;color:white;'>预约充电</button>
+        <button class="button2" style='background-color:#76de3f;color:white;'>预约充电</button>
+      
+
+      
+    </div>
+  </div>
+</body>
+</html>
+
+<script type="text/javascript">
+  var myCharging = new BMap.Icon("static/charging_icon.png", new BMap.Size(300, 300), {    
+               anchor: new BMap.Size(10, 25),    
+  //  imageOffset: new BMap.Size(-300, -200)   // 设置图片偏移    
+              });
+var myCar = new BMap.Icon("static/car.png", new BMap.Size(50, 70));
+function addPoint (point, icon) {
+      // var point = new BMap.Point(a, b);
+      // map.centerAndZoom(point, 15);
+      // var marker = new BMap.Marker(point);  // 创建标注
+      if (icon == "car") {
+        var myIcon = myCar;
+      } else {
+        var myIcon = myCharging
+      }
+      // map.addOverlay(marker);    
+      var marker2 = new BMap.Marker(point,{icon:myIcon});  // 创建标注
+      // var marker = new BMap.Marker(car3,{icon:myIcon});
+      map.addOverlay(marker2);   
+      // map.addOverlay(marker);
+
+      var sContent =
+        "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>充电站信息</h4>" + 
+        "<p>名称：民生路渡口充电站</p>"+
+        "<p>id:QD1ZrZNe3JUo7ZycK...</p>"+
+        "<p>剩余电桩数：7</p>" +
+        "<p>价格： 1.1¥/度</p>" +
+        "<p>周边路况： 良好</p>"+
+        "<button id='button' style='background-color:#76de3f;color:white;'>预约充电</button>"+
+
+        
+        "</div>";
+      var infoWindow = new BMap.InfoWindow(sContent);
+      marker2.addEventListener("click", function(){          
+      this.openInfoWindow(infoWindow);
+      // 图片加载完毕重绘infowindow
+      // document.getElementById('button').setAttribute("");
+	});
+    }
+var car1 = new BMap.Point(122.492889, 31.253586);
+var car2 = new BMap.Point(121.492889, 31.253586);
+var car3 = new BMap.Point(123.492889, 31.256);
+var car4 = new BMap.Point(125.492889, 31.253586);
+var car5 = new BMap.Point(121.492889, 31.253586);
+var map = new BMap.Map("allmap");    // 创建Map实例
+	 // 初始化地图,设置中心点坐标和地图级别
+	//添加地图类型控件
+	map.addControl(new BMap.MapTypeControl({
+		mapTypes:[
+            BMAP_NORMAL_MAP,
+            BMAP_HYBRID_MAP
+        ]}));	  
+	map.setCurrentCity("上海");          // 设置地图显示的城市 此项是必须设置的
+  map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+  
+  // var point = new BMap.Point(116.404, 39.915);
+	// map.centerAndZoom(point, 15);
+	// var marker = new BMap.Marker(point);  // 创建标注
+  // map.addOverlay(marker);   
+   
+  // addPoint(car1, "car");
+  // addPoint(car2, "car");
+  // addPoint(car3, "car");
+  // addPoint(car4, "car");
+  // addPoint(car5, "car");
+  
+
+  map.centerAndZoom(new BMap.Point(121.492889,31.253586), 13); 
+
+  function addMarker(point){
+    var marker = new BMap.Marker(point,{icon:myCar});
+    
+    var sContent =
+    "<h4 style='margin:0 0 5px 0;padding:0.2em 0'>充电站信息</h4>" + 
+        "<p>车型：Karma Revero</p>"+
+        "<p>id:QD1ZrZNe3JUo7ZycK...</p>"+
+        "<p>最近充电站： 民生路渡口充电站</p>" +
+        "<p>剩余电桩数：7</p>" +
+        "<p>余额：ZNe3JUo7ZycK... </p>" +
+        "<p>周边路况： 良好</p>"+
+        "<button id='button' style='background-color:#76de3f;color:white;margin-left：30px;'>导航</button>"+
+ 
+        "</div>";
+      var infoWindow = new BMap.InfoWindow(sContent);
+      marker.addEventListener("click", function(){          
+      this.openInfoWindow(infoWindow);
+      // 图片加载完毕重绘infowindow
+      document.getElementById('imgDemo').onload = function (){
+		   infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
+	   }
+	});
+	  map.addOverlay(marker);
+	}
+  var bounds = map.getBounds();
+	var sw = bounds.getSouthWest();
+	var ne = bounds.getNorthEast();
+	var lngSpan = Math.abs(sw.lng - ne.lng);
+	var latSpan = Math.abs(ne.lat - sw.lat);
+	for (var i = 0; i < 25; i ++) {
+		var point = new BMap.Point(sw.lng + lngSpan * (Math.random() * 0.7), ne.lat - latSpan * (Math.random() * 0.7));
+		addMarker(point);
+  }
+  addPoint(new BMap.Point(121.542889,31.253586), "charging"); 
+</script>
+
+<!-- <script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");    // 创建Map实例
+	 // 初始化地图,设置中心点坐标和地图级别
+	//添加地图类型控件
+	map.addControl(new BMap.MapTypeControl({
+		mapTypes:[
+            BMAP_NORMAL_MAP,
+            BMAP_HYBRID_MAP
+        ]}));	  
+	map.setCurrentCity("上海");          // 设置地图显示的城市 此项是必须设置的
+  map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+  
+  // var point = new BMap.Point(116.404, 39.915);
+	// map.centerAndZoom(point, 15);
+	// var marker = new BMap.Marker(point);  // 创建标注
+  // map.addOverlay(marker);   
+   
+  addPoint(car1, "car");
+  // addPoint(car2, "car");
+  // addPoint(car3, "car");
+  // addPoint(car4, "car");
+  // addPoint(car5, "car");
+  addPoint(new BMap.Point(121.542889,31.253586), "charging"); 
+
+  map.centerAndZoom(new BMap.Point(121.492889,31.253586), 13); 
+
+</script> -->
